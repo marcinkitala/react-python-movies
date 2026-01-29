@@ -1,4 +1,18 @@
 export default function MovieListItem(props) {
+    
+    const handleDeleteClick = () => {
+        const isConfirmed = window.confirm("Do you really want to delete this movie?");
+        
+        if (isConfirmed) {
+            props.onDelete();
+        }
+    };
+
+    const formatActors = (actorsList) => {
+        if (!actorsList || actorsList.length === 0) return "No actors assigned";
+        return actorsList.map(actor => actor.name).join(", ");
+    };
+
     return (
         <div>
             <div>
@@ -6,11 +20,16 @@ export default function MovieListItem(props) {
                 {' '}
                 <span>({props.movie.year})</span>
                 {' '}
-                directed by {props.movie.director}
+                {props.movie.director && <span>directed by {props.movie.director}</span>}
                 {' '}
-                <a onClick={props.onDelete}>Delete</a>
+                <a onClick={handleDeleteClick} style={{cursor: 'pointer', color: 'red', marginLeft: '10px'}}>Delete</a>
             </div>
-            {props.movie.description}
+            
+            <p>{props.movie.description}</p>
+            
+            <div style={{fontSize: '0.9em', color: '#666'}}>
+                <strong>Actors: </strong> {formatActors(props.movie.actors)}
+            </div>
         </div>
     );
 }
